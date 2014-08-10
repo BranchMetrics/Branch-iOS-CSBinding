@@ -1,0 +1,5 @@
+/Users/alexaustin/Documents/iOS/Branch-iOS-CSBinding/Branch-iOS-CSBinding/obj/Debug/MonoTouch,Version=v1.0.AssemblyAttribute.cs
+/Users/alexaustin/Documents/iOS/Branch-iOS-CSBinding/Branch-iOS-CSBinding/bin/Debug/Branch-iOS-CSBinding.dll.mdb
+/Users/alexaustin/Documents/iOS/Branch-iOS-CSBinding/Branch-iOS-CSBinding/bin/Debug/Branch-iOS-CSBinding.dll
+/Users/alexaustin/Documents/iOS/Branch-iOS-CSBinding/Branch-iOS-CSBinding/obj/Debug/Branch-iOS-CSBinding.dll
+/Users/alexaustin/Documents/iOS/Branch-iOS-CSBinding/Branch-iOS-CSBinding/obj/Debug/Branch-iOS-CSBinding.dll.mdb
