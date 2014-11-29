@@ -16,12 +16,14 @@ using MonoTouch.UIKit;
 using MonoTouch.GLKit;
 using MonoTouch.MapKit;
 using MonoTouch.Security;
+using MonoTouch.SceneKit;
 using MonoTouch.CoreVideo;
 using MonoTouch.CoreMedia;
 using MonoTouch.QuickLook;
 using MonoTouch.Foundation;
 using MonoTouch.CoreMotion;
 using MonoTouch.ObjCRuntime;
+using MonoTouch.AddressBook;
 using MonoTouch.CoreGraphics;
 using MonoTouch.CoreLocation;
 using MonoTouch.NewsstandKit;
@@ -33,8 +35,11 @@ namespace BranchSDK {
 	[Register("Branch", true)]
 	public unsafe partial class Branch : NSObject {
 		[CompilerGenerated]
-		const string selClearUser = "clearUser";
-		static readonly IntPtr selClearUserHandle = Selector.GetHandle ("clearUser");
+		const string selGetCreditHistoryForBucketAndCallback_ = "getCreditHistoryForBucket:andCallback:";
+		static readonly IntPtr selGetCreditHistoryForBucketAndCallback_Handle = Selector.GetHandle ("getCreditHistoryForBucket:andCallback:");
+		[CompilerGenerated]
+		const string selGetCreditHistoryWithCallback_ = "getCreditHistoryWithCallback:";
+		static readonly IntPtr selGetCreditHistoryWithCallback_Handle = Selector.GetHandle ("getCreditHistoryWithCallback:");
 		[CompilerGenerated]
 		const string selGetCredits = "getCredits";
 		static readonly IntPtr selGetCreditsHandle = Selector.GetHandle ("getCredits");
@@ -42,11 +47,11 @@ namespace BranchSDK {
 		const string selGetCreditsForBucket_ = "getCreditsForBucket:";
 		static readonly IntPtr selGetCreditsForBucket_Handle = Selector.GetHandle ("getCreditsForBucket:");
 		[CompilerGenerated]
-		const string selGetInstallReferringParams = "getInstallReferringParams";
-		static readonly IntPtr selGetInstallReferringParamsHandle = Selector.GetHandle ("getInstallReferringParams");
+		const string selGetFirstReferringParams = "getFirstReferringParams";
+		static readonly IntPtr selGetFirstReferringParamsHandle = Selector.GetHandle ("getFirstReferringParams");
 		[CompilerGenerated]
-		const string selGetReferringParams = "getReferringParams";
-		static readonly IntPtr selGetReferringParamsHandle = Selector.GetHandle ("getReferringParams");
+		const string selGetLatestReferringParams = "getLatestReferringParams";
+		static readonly IntPtr selGetLatestReferringParamsHandle = Selector.GetHandle ("getLatestReferringParams");
 		[CompilerGenerated]
 		const string selGetShortURLWithCallback_ = "getShortURLWithCallback:";
 		static readonly IntPtr selGetShortURLWithCallback_Handle = Selector.GetHandle ("getShortURLWithCallback:");
@@ -54,11 +59,14 @@ namespace BranchSDK {
 		const string selGetShortURLWithParamsAndCallback_ = "getShortURLWithParams:andCallback:";
 		static readonly IntPtr selGetShortURLWithParamsAndCallback_Handle = Selector.GetHandle ("getShortURLWithParams:andCallback:");
 		[CompilerGenerated]
-		const string selGetShortURLWithParamsAndTagAndCallback_ = "getShortURLWithParams:andTag:andCallback:";
-		static readonly IntPtr selGetShortURLWithParamsAndTagAndCallback_Handle = Selector.GetHandle ("getShortURLWithParams:andTag:andCallback:");
+		const string selGetShortURLWithParamsAndChannelAndFeatureAndCallback_ = "getShortURLWithParams:andChannel:andFeature:andCallback:";
+		static readonly IntPtr selGetShortURLWithParamsAndChannelAndFeatureAndCallback_Handle = Selector.GetHandle ("getShortURLWithParams:andChannel:andFeature:andCallback:");
 		[CompilerGenerated]
-		const string selGetShortURLWithTagAndCallback_ = "getShortURLWithTag:andCallback:";
-		static readonly IntPtr selGetShortURLWithTagAndCallback_Handle = Selector.GetHandle ("getShortURLWithTag:andCallback:");
+		const string selGetShortURLWithParamsAndChannelAndFeatureAndStageAndCallback_ = "getShortURLWithParams:andChannel:andFeature:andStage:andCallback:";
+		static readonly IntPtr selGetShortURLWithParamsAndChannelAndFeatureAndStageAndCallback_Handle = Selector.GetHandle ("getShortURLWithParams:andChannel:andFeature:andStage:andCallback:");
+		[CompilerGenerated]
+		const string selGetShortURLWithParamsAndTagsAndChannelAndFeatureAndStageAndCallback_ = "getShortURLWithParams:andTags:andChannel:andFeature:andStage:andCallback:";
+		static readonly IntPtr selGetShortURLWithParamsAndTagsAndChannelAndFeatureAndStageAndCallback_Handle = Selector.GetHandle ("getShortURLWithParams:andTags:andChannel:andFeature:andStage:andCallback:");
 		[CompilerGenerated]
 		const string selGetTotalCountsForAction_ = "getTotalCountsForAction:";
 		static readonly IntPtr selGetTotalCountsForAction_Handle = Selector.GetHandle ("getTotalCountsForAction:");
@@ -69,41 +77,35 @@ namespace BranchSDK {
 		const string selHandleDeepLink_ = "handleDeepLink:";
 		static readonly IntPtr selHandleDeepLink_Handle = Selector.GetHandle ("handleDeepLink:");
 		[CompilerGenerated]
-		const string selHasIdentity_ = "hasIdentity:";
-		static readonly IntPtr selHasIdentity_Handle = Selector.GetHandle ("hasIdentity:");
+		const string selInitSession = "initSession";
+		static readonly IntPtr selInitSessionHandle = Selector.GetHandle ("initSession");
 		[CompilerGenerated]
-		const string selHasIdentityWithCallback_ = "hasIdentity:withCallback:";
-		static readonly IntPtr selHasIdentityWithCallback_Handle = Selector.GetHandle ("hasIdentity:withCallback:");
+		const string selInitSession_ = "initSession:";
+		static readonly IntPtr selInitSession_Handle = Selector.GetHandle ("initSession:");
 		[CompilerGenerated]
-		const string selIdentifyUser_ = "identifyUser:";
-		static readonly IntPtr selIdentifyUser_Handle = Selector.GetHandle ("identifyUser:");
+		const string selInitSessionAndRegisterDeepLinkHandler_ = "initSessionAndRegisterDeepLinkHandler:";
+		static readonly IntPtr selInitSessionAndRegisterDeepLinkHandler_Handle = Selector.GetHandle ("initSessionAndRegisterDeepLinkHandler:");
 		[CompilerGenerated]
-		const string selInitUserSession = "initUserSession";
-		static readonly IntPtr selInitUserSessionHandle = Selector.GetHandle ("initUserSession");
+		const string selInitSessionWithLaunchOptions_ = "initSessionWithLaunchOptions:";
+		static readonly IntPtr selInitSessionWithLaunchOptions_Handle = Selector.GetHandle ("initSessionWithLaunchOptions:");
 		[CompilerGenerated]
-		const string selInitUserSession_ = "initUserSession:";
-		static readonly IntPtr selInitUserSession_Handle = Selector.GetHandle ("initUserSession:");
+		const string selInitSessionWithLaunchOptionsAndIsReferrable_ = "initSessionWithLaunchOptions:andIsReferrable:";
+		static readonly IntPtr selInitSessionWithLaunchOptionsAndIsReferrable_Handle = Selector.GetHandle ("initSessionWithLaunchOptions:andIsReferrable:");
 		[CompilerGenerated]
-		const string selInitUserSessionWithCallback_ = "initUserSessionWithCallback:";
-		static readonly IntPtr selInitUserSessionWithCallback_Handle = Selector.GetHandle ("initUserSessionWithCallback:");
+		const string selInitSessionWithLaunchOptionsAndIsReferrableAndRegisterDeepLinkHandler_ = "initSessionWithLaunchOptions:andIsReferrable:andRegisterDeepLinkHandler:";
+		static readonly IntPtr selInitSessionWithLaunchOptionsAndIsReferrableAndRegisterDeepLinkHandler_Handle = Selector.GetHandle ("initSessionWithLaunchOptions:andIsReferrable:andRegisterDeepLinkHandler:");
 		[CompilerGenerated]
-		const string selInitUserSessionWithCallbackAndIsReferrable_ = "initUserSessionWithCallback:andIsReferrable:";
-		static readonly IntPtr selInitUserSessionWithCallbackAndIsReferrable_Handle = Selector.GetHandle ("initUserSessionWithCallback:andIsReferrable:");
-		[CompilerGenerated]
-		const string selInitUserSessionWithCallbackAndIsReferrableWithLaunchOptions_ = "initUserSessionWithCallback:andIsReferrable:withLaunchOptions:";
-		static readonly IntPtr selInitUserSessionWithCallbackAndIsReferrableWithLaunchOptions_Handle = Selector.GetHandle ("initUserSessionWithCallback:andIsReferrable:withLaunchOptions:");
-		[CompilerGenerated]
-		const string selInitUserSessionWithLaunchOptions_ = "initUserSessionWithLaunchOptions:";
-		static readonly IntPtr selInitUserSessionWithLaunchOptions_Handle = Selector.GetHandle ("initUserSessionWithLaunchOptions:");
-		[CompilerGenerated]
-		const string selInitUserSessionWithLaunchOptionsAndIsReferrable_ = "initUserSessionWithLaunchOptions:andIsReferrable:";
-		static readonly IntPtr selInitUserSessionWithLaunchOptionsAndIsReferrable_Handle = Selector.GetHandle ("initUserSessionWithLaunchOptions:andIsReferrable:");
+		const string selInitSessionWithLaunchOptionsAndRegisterDeepLinkHandler_ = "initSessionWithLaunchOptions:andRegisterDeepLinkHandler:";
+		static readonly IntPtr selInitSessionWithLaunchOptionsAndRegisterDeepLinkHandler_Handle = Selector.GetHandle ("initSessionWithLaunchOptions:andRegisterDeepLinkHandler:");
 		[CompilerGenerated]
 		const string selLoadActionCountsWithCallback_ = "loadActionCountsWithCallback:";
 		static readonly IntPtr selLoadActionCountsWithCallback_Handle = Selector.GetHandle ("loadActionCountsWithCallback:");
 		[CompilerGenerated]
 		const string selLoadRewardsWithCallback_ = "loadRewardsWithCallback:";
 		static readonly IntPtr selLoadRewardsWithCallback_Handle = Selector.GetHandle ("loadRewardsWithCallback:");
+		[CompilerGenerated]
+		const string selLogout = "logout";
+		static readonly IntPtr selLogoutHandle = Selector.GetHandle ("logout");
 		[CompilerGenerated]
 		const string selRedeemRewards = "redeemRewards";
 		static readonly IntPtr selRedeemRewardsHandle = Selector.GetHandle ("redeemRewards");
@@ -113,6 +115,12 @@ namespace BranchSDK {
 		[CompilerGenerated]
 		const string selResetUserSession = "resetUserSession";
 		static readonly IntPtr selResetUserSessionHandle = Selector.GetHandle ("resetUserSession");
+		[CompilerGenerated]
+		const string selSetIdentity_ = "setIdentity:";
+		static readonly IntPtr selSetIdentity_Handle = Selector.GetHandle ("setIdentity:");
+		[CompilerGenerated]
+		const string selSetIdentityWithCallback_ = "setIdentity:withCallback:";
+		static readonly IntPtr selSetIdentityWithCallback_Handle = Selector.GetHandle ("setIdentity:withCallback:");
 		[CompilerGenerated]
 		const string selUserCompletedAction_ = "userCompletedAction:";
 		static readonly IntPtr selUserCompletedAction_Handle = Selector.GetHandle ("userCompletedAction:");
@@ -160,15 +168,50 @@ namespace BranchSDK {
 			IsDirectBinding = GetType ().Assembly == global::ApiDefinition.Messaging.this_assembly;
 		}
 
-		[Export ("clearUser")]
+		[Export ("getCreditHistoryWithCallback:")]
 		[CompilerGenerated]
-		public virtual void ClearUser ()
+		public unsafe virtual void GetCreditHistoryWithCallback ([BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchListLoaded))]BranchListLoaded callback)
 		{
+			if (callback == null)
+				throw new ArgumentNullException ("callback");
+			BlockLiteral *block_ptr_callback;
+			BlockLiteral block_callback;
+			block_callback = new BlockLiteral ();
+			block_ptr_callback = &block_callback;
+			block_callback.SetupBlock (Trampolines.SDBranchListLoaded.Handler, callback);
+			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend (this.Handle, selClearUserHandle);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selGetCreditHistoryWithCallback_Handle, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper (this.SuperHandle, selClearUserHandle);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selGetCreditHistoryWithCallback_Handle, (IntPtr) block_ptr_callback);
 			}
+			block_ptr_callback->CleanupBlock ();
+			
+		}
+		
+		[Export ("getCreditHistoryForBucket:andCallback:")]
+		[CompilerGenerated]
+		public unsafe virtual void GetCreditHistoryWithCallback (string bucket, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchListLoaded))]BranchListLoaded callback)
+		{
+			if (bucket == null)
+				throw new ArgumentNullException ("bucket");
+			if (callback == null)
+				throw new ArgumentNullException ("callback");
+			var nsbucket = NSString.CreateNative (bucket);
+			BlockLiteral *block_ptr_callback;
+			BlockLiteral block_callback;
+			block_callback = new BlockLiteral ();
+			block_ptr_callback = &block_callback;
+			block_callback.SetupBlock (Trampolines.SDBranchListLoaded.Handler, callback);
+			
+			if (IsDirectBinding) {
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selGetCreditHistoryForBucketAndCallback_Handle, nsbucket, (IntPtr) block_ptr_callback);
+			} else {
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selGetCreditHistoryForBucketAndCallback_Handle, nsbucket, (IntPtr) block_ptr_callback);
+			}
+			NSString.ReleaseNative (nsbucket);
+			block_ptr_callback->CleanupBlock ();
+			
 		}
 		
 		[Export ("getCredits")]
@@ -201,25 +244,25 @@ namespace BranchSDK {
 			return ret;
 		}
 		
-		[Export ("getInstallReferringParams")]
+		[Export ("getFirstReferringParams")]
 		[CompilerGenerated]
-		public virtual NSDictionary GetInstallReferringParams ()
+		public virtual NSDictionary GetFirstReferringParams ()
 		{
 			if (IsDirectBinding) {
-				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSend (this.Handle, selGetInstallReferringParamsHandle));
+				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSend (this.Handle, selGetFirstReferringParamsHandle));
 			} else {
-				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selGetInstallReferringParamsHandle));
+				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selGetFirstReferringParamsHandle));
 			}
 		}
 		
-		[Export ("getReferringParams")]
+		[Export ("getLatestReferringParams")]
 		[CompilerGenerated]
-		public virtual NSDictionary GetReferringParams ()
+		public virtual NSDictionary GetLatestReferringParams ()
 		{
 			if (IsDirectBinding) {
-				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSend (this.Handle, selGetReferringParamsHandle));
+				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSend (this.Handle, selGetLatestReferringParamsHandle));
 			} else {
-				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selGetReferringParamsHandle));
+				return  Runtime.GetNSObject<NSDictionary> (ApiDefinition.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, selGetLatestReferringParamsHandle));
 			}
 		}
 		
@@ -267,15 +310,25 @@ namespace BranchSDK {
 			
 		}
 		
-		[Export ("getShortURLWithTag:andCallback:")]
+		[Export ("getShortURLWithParams:andTags:andChannel:andFeature:andStage:andCallback:")]
 		[CompilerGenerated]
-		public unsafe virtual void GetShortUrlWithCallback (string tag, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchUrlCreated))]BranchUrlCreated callback)
+		public unsafe virtual void GetShortUrlWithCallback (NSDictionary parameters, NSArray tags, string channel, string feature, string stage, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchUrlCreated))]BranchUrlCreated callback)
 		{
-			if (tag == null)
-				throw new ArgumentNullException ("tag");
+			if (parameters == null)
+				throw new ArgumentNullException ("parameters");
+			if (tags == null)
+				throw new ArgumentNullException ("tags");
+			if (channel == null)
+				throw new ArgumentNullException ("channel");
+			if (feature == null)
+				throw new ArgumentNullException ("feature");
+			if (stage == null)
+				throw new ArgumentNullException ("stage");
 			if (callback == null)
 				throw new ArgumentNullException ("callback");
-			var nstag = NSString.CreateNative (tag);
+			var nschannel = NSString.CreateNative (channel);
+			var nsfeature = NSString.CreateNative (feature);
+			var nsstage = NSString.CreateNative (stage);
 			BlockLiteral *block_ptr_callback;
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
@@ -283,26 +336,34 @@ namespace BranchSDK {
 			block_callback.SetupBlock (Trampolines.SDBranchUrlCreated.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selGetShortURLWithTagAndCallback_Handle, nstag, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr (this.Handle, selGetShortURLWithParamsAndTagsAndChannelAndFeatureAndStageAndCallback_Handle, parameters.Handle, tags.Handle, nschannel, nsfeature, nsstage, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selGetShortURLWithTagAndCallback_Handle, nstag, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr (this.SuperHandle, selGetShortURLWithParamsAndTagsAndChannelAndFeatureAndStageAndCallback_Handle, parameters.Handle, tags.Handle, nschannel, nsfeature, nsstage, (IntPtr) block_ptr_callback);
 			}
-			NSString.ReleaseNative (nstag);
+			NSString.ReleaseNative (nschannel);
+			NSString.ReleaseNative (nsfeature);
+			NSString.ReleaseNative (nsstage);
 			block_ptr_callback->CleanupBlock ();
 			
 		}
 		
-		[Export ("getShortURLWithParams:andTag:andCallback:")]
+		[Export ("getShortURLWithParams:andChannel:andFeature:andStage:andCallback:")]
 		[CompilerGenerated]
-		public unsafe virtual void GetShortUrlWithCallback (NSDictionary parameters, string tag, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchUrlCreated))]BranchUrlCreated callback)
+		public unsafe virtual void GetShortUrlWithCallback (NSDictionary parameters, string channel, string feature, string stage, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchUrlCreated))]BranchUrlCreated callback)
 		{
 			if (parameters == null)
 				throw new ArgumentNullException ("parameters");
-			if (tag == null)
-				throw new ArgumentNullException ("tag");
+			if (channel == null)
+				throw new ArgumentNullException ("channel");
+			if (feature == null)
+				throw new ArgumentNullException ("feature");
+			if (stage == null)
+				throw new ArgumentNullException ("stage");
 			if (callback == null)
 				throw new ArgumentNullException ("callback");
-			var nstag = NSString.CreateNative (tag);
+			var nschannel = NSString.CreateNative (channel);
+			var nsfeature = NSString.CreateNative (feature);
+			var nsstage = NSString.CreateNative (stage);
 			BlockLiteral *block_ptr_callback;
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
@@ -310,11 +371,44 @@ namespace BranchSDK {
 			block_callback.SetupBlock (Trampolines.SDBranchUrlCreated.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr (this.Handle, selGetShortURLWithParamsAndTagAndCallback_Handle, parameters.Handle, nstag, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr (this.Handle, selGetShortURLWithParamsAndChannelAndFeatureAndStageAndCallback_Handle, parameters.Handle, nschannel, nsfeature, nsstage, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr (this.SuperHandle, selGetShortURLWithParamsAndTagAndCallback_Handle, parameters.Handle, nstag, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr_IntPtr (this.SuperHandle, selGetShortURLWithParamsAndChannelAndFeatureAndStageAndCallback_Handle, parameters.Handle, nschannel, nsfeature, nsstage, (IntPtr) block_ptr_callback);
 			}
-			NSString.ReleaseNative (nstag);
+			NSString.ReleaseNative (nschannel);
+			NSString.ReleaseNative (nsfeature);
+			NSString.ReleaseNative (nsstage);
+			block_ptr_callback->CleanupBlock ();
+			
+		}
+		
+		[Export ("getShortURLWithParams:andChannel:andFeature:andCallback:")]
+		[CompilerGenerated]
+		public unsafe virtual void GetShortUrlWithCallback (NSDictionary parameters, string channel, string feature, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchUrlCreated))]BranchUrlCreated callback)
+		{
+			if (parameters == null)
+				throw new ArgumentNullException ("parameters");
+			if (channel == null)
+				throw new ArgumentNullException ("channel");
+			if (feature == null)
+				throw new ArgumentNullException ("feature");
+			if (callback == null)
+				throw new ArgumentNullException ("callback");
+			var nschannel = NSString.CreateNative (channel);
+			var nsfeature = NSString.CreateNative (feature);
+			BlockLiteral *block_ptr_callback;
+			BlockLiteral block_callback;
+			block_callback = new BlockLiteral ();
+			block_ptr_callback = &block_callback;
+			block_callback.SetupBlock (Trampolines.SDBranchUrlCreated.Handler, callback);
+			
+			if (IsDirectBinding) {
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr_IntPtr_IntPtr (this.Handle, selGetShortURLWithParamsAndChannelAndFeatureAndCallback_Handle, parameters.Handle, nschannel, nsfeature, (IntPtr) block_ptr_callback);
+			} else {
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr_IntPtr_IntPtr (this.SuperHandle, selGetShortURLWithParamsAndChannelAndFeatureAndCallback_Handle, parameters.Handle, nschannel, nsfeature, (IntPtr) block_ptr_callback);
+			}
+			NSString.ReleaseNative (nschannel);
+			NSString.ReleaseNative (nsfeature);
 			block_ptr_callback->CleanupBlock ();
 			
 		}
@@ -370,18 +464,7 @@ namespace BranchSDK {
 			}
 		}
 		
-		[Export ("hasIdentity:")]
-		[CompilerGenerated]
-		public virtual bool HasIdentity ()
-		{
-			if (IsDirectBinding) {
-				return ApiDefinition.Messaging.bool_objc_msgSend (this.Handle, selHasIdentity_Handle);
-			} else {
-				return ApiDefinition.Messaging.bool_objc_msgSendSuper (this.SuperHandle, selHasIdentity_Handle);
-			}
-		}
-		
-		[Export ("identifyUser:")]
+		[Export ("setIdentity:")]
 		[CompilerGenerated]
 		public virtual void IdentifyUser (string identity)
 		{
@@ -390,17 +473,17 @@ namespace BranchSDK {
 			var nsidentity = NSString.CreateNative (identity);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selIdentifyUser_Handle, nsidentity);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selSetIdentity_Handle, nsidentity);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selIdentifyUser_Handle, nsidentity);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selSetIdentity_Handle, nsidentity);
 			}
 			NSString.ReleaseNative (nsidentity);
 			
 		}
 		
-		[Export ("hasIdentity:withCallback:")]
+		[Export ("setIdentity:withCallback:")]
 		[CompilerGenerated]
-		public unsafe virtual void IdentifyUser (string identity, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchSessionLoaded))]BranchSessionLoaded callback)
+		public unsafe virtual void IdentifyUser (string identity, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchDeepLinkHandler))]BranchDeepLinkHandler callback)
 		{
 			if (identity == null)
 				throw new ArgumentNullException ("identity");
@@ -411,43 +494,43 @@ namespace BranchSDK {
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
 			block_ptr_callback = &block_callback;
-			block_callback.SetupBlock (Trampolines.SDBranchSessionLoaded.Handler, callback);
+			block_callback.SetupBlock (Trampolines.SDBranchDeepLinkHandler.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selHasIdentityWithCallback_Handle, nsidentity, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selSetIdentityWithCallback_Handle, nsidentity, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selHasIdentityWithCallback_Handle, nsidentity, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selSetIdentityWithCallback_Handle, nsidentity, (IntPtr) block_ptr_callback);
 			}
 			NSString.ReleaseNative (nsidentity);
 			block_ptr_callback->CleanupBlock ();
 			
 		}
 		
-		[Export ("initUserSession")]
+		[Export ("initSession")]
 		[CompilerGenerated]
-		public virtual void InitUserSession ()
+		public virtual void InitSession ()
 		{
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend (this.Handle, selInitUserSessionHandle);
+				ApiDefinition.Messaging.void_objc_msgSend (this.Handle, selInitSessionHandle);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper (this.SuperHandle, selInitUserSessionHandle);
+				ApiDefinition.Messaging.void_objc_msgSendSuper (this.SuperHandle, selInitSessionHandle);
 			}
 		}
 		
-		[Export ("initUserSession:")]
+		[Export ("initSession:")]
 		[CompilerGenerated]
-		public virtual void InitUserSession (bool isReferralble)
+		public virtual void InitSession (bool isReferralble)
 		{
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_bool (this.Handle, selInitUserSession_Handle, isReferralble);
+				ApiDefinition.Messaging.void_objc_msgSend_bool (this.Handle, selInitSession_Handle, isReferralble);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, selInitUserSession_Handle, isReferralble);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_bool (this.SuperHandle, selInitSession_Handle, isReferralble);
 			}
 		}
 		
-		[Export ("initUserSessionWithCallback:")]
+		[Export ("initSessionAndRegisterDeepLinkHandler:")]
 		[CompilerGenerated]
-		public unsafe virtual void InitUserSessionWithCallback ([BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchSessionLoaded))]BranchSessionLoaded callback)
+		public unsafe virtual void InitSessionAndRegisterDeepLinkHandler ([BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchDeepLinkHandler))]BranchDeepLinkHandler callback)
 		{
 			if (callback == null)
 				throw new ArgumentNullException ("callback");
@@ -455,84 +538,86 @@ namespace BranchSDK {
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
 			block_ptr_callback = &block_callback;
-			block_callback.SetupBlock (Trampolines.SDBranchSessionLoaded.Handler, callback);
+			block_callback.SetupBlock (Trampolines.SDBranchDeepLinkHandler.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selInitUserSessionWithCallback_Handle, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selInitSessionAndRegisterDeepLinkHandler_Handle, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitUserSessionWithCallback_Handle, (IntPtr) block_ptr_callback);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitSessionAndRegisterDeepLinkHandler_Handle, (IntPtr) block_ptr_callback);
 			}
 			block_ptr_callback->CleanupBlock ();
 			
 		}
 		
-		[Export ("initUserSessionWithCallback:andIsReferrable:")]
+		[Export ("initSessionWithLaunchOptions:andRegisterDeepLinkHandler:")]
 		[CompilerGenerated]
-		public unsafe virtual void InitUserSessionWithCallback ([BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchSessionLoaded))]BranchSessionLoaded callback, bool isReferrable)
+		public unsafe virtual void InitSessionAndRegisterDeepLinkHandler (NSDictionary launchOptions, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchDeepLinkHandler))]BranchDeepLinkHandler callback)
 		{
+			if (launchOptions == null)
+				throw new ArgumentNullException ("launchOptions");
 			if (callback == null)
 				throw new ArgumentNullException ("callback");
 			BlockLiteral *block_ptr_callback;
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
 			block_ptr_callback = &block_callback;
-			block_callback.SetupBlock (Trampolines.SDBranchSessionLoaded.Handler, callback);
+			block_callback.SetupBlock (Trampolines.SDBranchDeepLinkHandler.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_bool (this.Handle, selInitUserSessionWithCallbackAndIsReferrable_Handle, (IntPtr) block_ptr_callback, isReferrable);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_IntPtr (this.Handle, selInitSessionWithLaunchOptionsAndRegisterDeepLinkHandler_Handle, launchOptions.Handle, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_bool (this.SuperHandle, selInitUserSessionWithCallbackAndIsReferrable_Handle, (IntPtr) block_ptr_callback, isReferrable);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (this.SuperHandle, selInitSessionWithLaunchOptionsAndRegisterDeepLinkHandler_Handle, launchOptions.Handle, (IntPtr) block_ptr_callback);
 			}
 			block_ptr_callback->CleanupBlock ();
 			
 		}
 		
-		[Export ("initUserSessionWithCallback:andIsReferrable:withLaunchOptions:")]
+		[Export ("initSessionWithLaunchOptions:andIsReferrable:andRegisterDeepLinkHandler:")]
 		[CompilerGenerated]
-		public unsafe virtual void InitUserSessionWithCallback ([BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchSessionLoaded))]BranchSessionLoaded callback, bool isReferrable, NSDictionary launchOptions)
+		public unsafe virtual void InitSessionAndRegisterDeepLinkHandler (NSDictionary launchOptions, bool isReferrable, [BlockProxy (typeof (MonoTouch.ObjCRuntime.Trampolines.NIDBranchDeepLinkHandler))]BranchDeepLinkHandler callback)
 		{
-			if (callback == null)
-				throw new ArgumentNullException ("callback");
 			if (launchOptions == null)
 				throw new ArgumentNullException ("launchOptions");
+			if (callback == null)
+				throw new ArgumentNullException ("callback");
 			BlockLiteral *block_ptr_callback;
 			BlockLiteral block_callback;
 			block_callback = new BlockLiteral ();
 			block_ptr_callback = &block_callback;
-			block_callback.SetupBlock (Trampolines.SDBranchSessionLoaded.Handler, callback);
+			block_callback.SetupBlock (Trampolines.SDBranchDeepLinkHandler.Handler, callback);
 			
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_bool_IntPtr (this.Handle, selInitUserSessionWithCallbackAndIsReferrableWithLaunchOptions_Handle, (IntPtr) block_ptr_callback, isReferrable, launchOptions.Handle);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_bool_IntPtr (this.Handle, selInitSessionWithLaunchOptionsAndIsReferrableAndRegisterDeepLinkHandler_Handle, launchOptions.Handle, isReferrable, (IntPtr) block_ptr_callback);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_bool_IntPtr (this.SuperHandle, selInitUserSessionWithCallbackAndIsReferrableWithLaunchOptions_Handle, (IntPtr) block_ptr_callback, isReferrable, launchOptions.Handle);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_bool_IntPtr (this.SuperHandle, selInitSessionWithLaunchOptionsAndIsReferrableAndRegisterDeepLinkHandler_Handle, launchOptions.Handle, isReferrable, (IntPtr) block_ptr_callback);
 			}
 			block_ptr_callback->CleanupBlock ();
 			
 		}
 		
-		[Export ("initUserSessionWithLaunchOptions:andIsReferrable:")]
+		[Export ("initSessionWithLaunchOptions:andIsReferrable:")]
 		[CompilerGenerated]
-		public virtual void InitUserSessionWithLaunchOption (NSDictionary launchOptions, bool isReferrable)
+		public virtual void InitSessionWithLaunchOption (NSDictionary launchOptions, bool isReferrable)
 		{
 			if (launchOptions == null)
 				throw new ArgumentNullException ("launchOptions");
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_bool (this.Handle, selInitUserSessionWithLaunchOptionsAndIsReferrable_Handle, launchOptions.Handle, isReferrable);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr_bool (this.Handle, selInitSessionWithLaunchOptionsAndIsReferrable_Handle, launchOptions.Handle, isReferrable);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_bool (this.SuperHandle, selInitUserSessionWithLaunchOptionsAndIsReferrable_Handle, launchOptions.Handle, isReferrable);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr_bool (this.SuperHandle, selInitSessionWithLaunchOptionsAndIsReferrable_Handle, launchOptions.Handle, isReferrable);
 			}
 		}
 		
-		[Export ("initUserSessionWithLaunchOptions:")]
+		[Export ("initSessionWithLaunchOptions:")]
 		[CompilerGenerated]
-		public virtual void InitUserSessionWithLaunchOptions (NSDictionary launchOptions)
+		public virtual void InitSessionWithLaunchOptions (NSDictionary launchOptions)
 		{
 			if (launchOptions == null)
 				throw new ArgumentNullException ("launchOptions");
 			if (IsDirectBinding) {
-				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selInitUserSessionWithLaunchOptions_Handle, launchOptions.Handle);
+				ApiDefinition.Messaging.void_objc_msgSend_IntPtr (this.Handle, selInitSessionWithLaunchOptions_Handle, launchOptions.Handle);
 			} else {
-				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitUserSessionWithLaunchOptions_Handle, launchOptions.Handle);
+				ApiDefinition.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitSessionWithLaunchOptions_Handle, launchOptions.Handle);
 			}
 		}
 		
@@ -576,6 +661,17 @@ namespace BranchSDK {
 			}
 			block_ptr_callback->CleanupBlock ();
 			
+		}
+		
+		[Export ("logout")]
+		[CompilerGenerated]
+		public virtual void Logout ()
+		{
+			if (IsDirectBinding) {
+				ApiDefinition.Messaging.void_objc_msgSend (this.Handle, selLogoutHandle);
+			} else {
+				ApiDefinition.Messaging.void_objc_msgSendSuper (this.SuperHandle, selLogoutHandle);
+			}
 		}
 		
 		[Export ("redeemRewards")]
@@ -654,7 +750,8 @@ namespace BranchSDK {
 		}
 		
 	} /* class Branch */
-	public delegate void BranchRewardsLoaded (bool changed);
-	public delegate void BranchSessionLoaded (NSDictionary parameters);
-	public delegate void BranchUrlCreated (string url);
+	public delegate void BranchDeepLinkHandler (NSDictionary parameters, NSError error);
+	public delegate void BranchListLoaded (NSArray history, NSError error);
+	public delegate void BranchRewardsLoaded (bool changed, NSError error);
+	public delegate void BranchUrlCreated (string url, NSError error);
 }

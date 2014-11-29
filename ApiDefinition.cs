@@ -4,43 +4,45 @@ using System.Drawing;
 using MonoTouch.ObjCRuntime;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using MonoTouch.AdSupport;
+using MonoTouch.CoreTelephony;
 
 namespace BranchSDK
 {
-	public delegate void BranchSessionLoaded (NSDictionary parameters);
-	public delegate void BranchUrlCreated (string url);
-	public delegate void BranchRewardsLoaded (bool changed);
+	public delegate void BranchDeepLinkHandler (NSDictionary parameters, NSError error);
+	public delegate void BranchUrlCreated (string url, NSError error);
+	public delegate void BranchRewardsLoaded (bool changed, NSError error);
+	public delegate void BranchListLoaded (NSArray history, NSError error);
 
 	[BaseType (typeof (NSObject))]
 	public interface Branch {
 
+		[Export ("initSession")]
+		void InitSession ();
 
-		[Export ("initUserSession")]
-		void InitUserSession ();
+		[Export ("initSessionWithLaunchOptions:")]
+		void InitSessionWithLaunchOptions (NSDictionary launchOptions);
 
-		[Export ("initUserSessionWithLaunchOptions:")]
-		void InitUserSessionWithLaunchOptions (NSDictionary launchOptions);
+		[Export ("initSession:")]
+		void InitSession (bool isReferralble);
 
-		[Export ("initUserSession:")]
-		void InitUserSession (bool isReferralble);
+		[Export ("initSessionWithLaunchOptions:andIsReferrable:")]
+		void InitSessionWithLaunchOption (NSDictionary launchOptions, bool isReferrable);
 
-		[Export ("initUserSessionWithLaunchOptions:andIsReferrable:")]
-		void InitUserSessionWithLaunchOption (NSDictionary launchOptions, bool isReferrable);
+		[Export ("initSessionAndRegisterDeepLinkHandler:")]
+		void InitSessionAndRegisterDeepLinkHandler (BranchDeepLinkHandler callback);
 
-		[Export ("initUserSessionWithCallback:")]
-		void InitUserSessionWithCallback (BranchSessionLoaded callback);
+		[Export ("initSessionWithLaunchOptions:andRegisterDeepLinkHandler:")]
+		void InitSessionAndRegisterDeepLinkHandler (NSDictionary launchOptions, BranchDeepLinkHandler callback);
 
-		[Export ("initUserSessionWithCallback:andIsReferrable:")]
-		void InitUserSessionWithCallback (BranchSessionLoaded callback, bool isReferrable);
+		[Export ("initSessionWithLaunchOptions:andIsReferrable:andRegisterDeepLinkHandler:")]
+		void InitSessionAndRegisterDeepLinkHandler (NSDictionary launchOptions, bool isReferrable, BranchDeepLinkHandler callback);
 
-		[Export ("initUserSessionWithCallback:andIsReferrable:withLaunchOptions:")]
-		void InitUserSessionWithCallback (BranchSessionLoaded callback, bool isReferrable, NSDictionary launchOptions);
+		[Export ("getFirstReferringParams")]
+		NSDictionary GetFirstReferringParams ();
 
-		[Export ("getInstallReferringParams")]
-		NSDictionary GetInstallReferringParams ();
-
-		[Export ("getReferringParams")]
-		NSDictionary GetReferringParams ();
+		[Export ("getLatestReferringParams")]
+		NSDictionary GetLatestReferringParams ();
 
 		[Export ("resetUserSession")]
 		void ResetUserSession ();
@@ -48,17 +50,14 @@ namespace BranchSDK
 		[Export ("handleDeepLink:")]
 		bool HandleDeepLink (NSUrl url);
 
-		[Export ("hasIdentity:")]
-		bool HasIdentity ();
-
-		[Export ("identifyUser:")]
+		[Export ("setIdentity:")]
 		void IdentifyUser (string identity);
 
-		[Export ("hasIdentity:withCallback:")]
-		void IdentifyUser (string identity, BranchSessionLoaded callback);
+		[Export ("setIdentity:withCallback:")]
+		void IdentifyUser (string identity, BranchDeepLinkHandler callback);
 
-		[Export ("clearUser")]
-		void ClearUser ();
+		[Export ("logout")]
+		void Logout ();
 
 		[Export ("loadRewardsWithCallback:")]
 		void LoadRewardsWithCallback (BranchRewardsLoaded callback);
@@ -78,6 +77,12 @@ namespace BranchSDK
 		[Export ("redeemRewards:forBucket:")]
 		void RedeemRewards (int count, string bucket);
 
+		[Export ("getCreditHistoryWithCallback:")]
+		void GetCreditHistoryWithCallback (BranchListLoaded callback);
+
+		[Export ("getCreditHistoryForBucket:andCallback:")]
+		void GetCreditHistoryWithCallback (string bucket, BranchListLoaded callback);
+
 		[Export ("userCompletedAction:")]
 		void UserCompletedAction (string action);
 
@@ -96,11 +101,14 @@ namespace BranchSDK
 		[Export ("getShortURLWithParams:andCallback:")]
 		void GetShortUrlWithCallback (NSDictionary parameters, BranchUrlCreated callback);
 
-		[Export ("getShortURLWithTag:andCallback:")]
-		void GetShortUrlWithCallback (string tag, BranchUrlCreated callback);
+		[Export ("getShortURLWithParams:andTags:andChannel:andFeature:andStage:andCallback:")]
+		void GetShortUrlWithCallback (NSDictionary parameters, NSArray tags, string channel, string feature, string stage, BranchUrlCreated callback);
 
-		[Export ("getShortURLWithParams:andTag:andCallback:")]
-		void GetShortUrlWithCallback (NSDictionary parameters, string tag, BranchUrlCreated callback);
+		[Export ("getShortURLWithParams:andChannel:andFeature:andStage:andCallback:")]
+		void GetShortUrlWithCallback (NSDictionary parameters, string channel, string feature, string stage, BranchUrlCreated callback);
+
+		[Export ("getShortURLWithParams:andChannel:andFeature:andCallback:")]
+		void GetShortUrlWithCallback (NSDictionary parameters, string channel, string feature, BranchUrlCreated callback);
 	}
 
 	// The first step to creating a binding is to add your native library ("libNativeLibrary.a")

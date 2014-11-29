@@ -16,12 +16,14 @@ using MonoTouch.UIKit;
 using MonoTouch.GLKit;
 using MonoTouch.MapKit;
 using MonoTouch.Security;
+using MonoTouch.SceneKit;
 using MonoTouch.CoreVideo;
 using MonoTouch.CoreMedia;
 using MonoTouch.QuickLook;
 using MonoTouch.Foundation;
 using MonoTouch.CoreMotion;
 using MonoTouch.ObjCRuntime;
+using MonoTouch.AddressBook;
 using MonoTouch.CoreGraphics;
 using MonoTouch.CoreLocation;
 using MonoTouch.NewsstandKit;
@@ -41,7 +43,55 @@ namespace MonoTouch.ObjCRuntime {
 		static extern void _Block_release (IntPtr ptr);
 		
 		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
-		internal delegate void DBranchUrlCreated (IntPtr block, IntPtr url);
+		internal delegate void DBranchListLoaded (IntPtr block, IntPtr history, IntPtr error);
+		
+		//
+		// This class bridges native block invocations that call into C#
+		//
+		static internal class SDBranchListLoaded {
+			static internal readonly DBranchListLoaded Handler = Invoke;
+			
+			[MonoPInvokeCallback (typeof (DBranchListLoaded))]
+			static unsafe void Invoke (IntPtr block, IntPtr history, IntPtr error) {
+				var descriptor = (BlockLiteral *) block;
+				var del = (global::BranchSDK.BranchListLoaded) (descriptor->Target);
+				if (del != null)
+					del ( Runtime.GetNSObject<MonoTouch.Foundation.NSArray> (history),  Runtime.GetNSObject<MonoTouch.Foundation.NSError> (error));
+			}
+		} /* class SDBranchListLoaded */
+		
+		internal class NIDBranchListLoaded {
+			IntPtr blockPtr;
+			DBranchListLoaded invoker;
+			
+			[Preserve (Conditional=true)]
+			public unsafe NIDBranchListLoaded (BlockLiteral *block)
+			{
+				blockPtr = _Block_copy ((IntPtr) block);
+				invoker = block->GetDelegateForBlock<DBranchListLoaded> ();
+			}
+			
+			[Preserve (Conditional=true)]
+			~NIDBranchListLoaded ()
+			{
+				_Block_release (blockPtr);
+			}
+			
+			[Preserve (Conditional=true)]
+			public unsafe static global::BranchSDK.BranchListLoaded Create (IntPtr block)
+			{
+				return new NIDBranchListLoaded ((BlockLiteral *) block).Invoke;
+			}
+			
+			[Preserve (Conditional=true)]
+			unsafe void Invoke (NSArray history, NSError error)
+			{
+				invoker (blockPtr, history == null ? IntPtr.Zero : history.Handle, error == null ? IntPtr.Zero : error.Handle);
+			}
+		} /* class NIDBranchListLoaded */
+		
+		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+		internal delegate void DBranchUrlCreated (IntPtr block, IntPtr url, IntPtr error);
 		
 		//
 		// This class bridges native block invocations that call into C#
@@ -50,11 +100,11 @@ namespace MonoTouch.ObjCRuntime {
 			static internal readonly DBranchUrlCreated Handler = Invoke;
 			
 			[MonoPInvokeCallback (typeof (DBranchUrlCreated))]
-			static unsafe void Invoke (IntPtr block, IntPtr url) {
+			static unsafe void Invoke (IntPtr block, IntPtr url, IntPtr error) {
 				var descriptor = (BlockLiteral *) block;
 				var del = (global::BranchSDK.BranchUrlCreated) (descriptor->Target);
 				if (del != null)
-					del (NSString.FromHandle (url));
+					del (NSString.FromHandle (url),  Runtime.GetNSObject<MonoTouch.Foundation.NSError> (error));
 			}
 		} /* class SDBranchUrlCreated */
 		
@@ -82,66 +132,66 @@ namespace MonoTouch.ObjCRuntime {
 			}
 			
 			[Preserve (Conditional=true)]
-			unsafe void Invoke (string url)
+			unsafe void Invoke (string url, NSError error)
 			{
 				var nsurl = NSString.CreateNative (url);
 				
-				invoker (blockPtr, nsurl);
+				invoker (blockPtr, nsurl, error == null ? IntPtr.Zero : error.Handle);
 				NSString.ReleaseNative (nsurl);
 				
 			}
 		} /* class NIDBranchUrlCreated */
 		
 		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
-		internal delegate void DBranchSessionLoaded (IntPtr block, IntPtr parameters);
+		internal delegate void DBranchDeepLinkHandler (IntPtr block, IntPtr parameters, IntPtr error);
 		
 		//
 		// This class bridges native block invocations that call into C#
 		//
-		static internal class SDBranchSessionLoaded {
-			static internal readonly DBranchSessionLoaded Handler = Invoke;
+		static internal class SDBranchDeepLinkHandler {
+			static internal readonly DBranchDeepLinkHandler Handler = Invoke;
 			
-			[MonoPInvokeCallback (typeof (DBranchSessionLoaded))]
-			static unsafe void Invoke (IntPtr block, IntPtr parameters) {
+			[MonoPInvokeCallback (typeof (DBranchDeepLinkHandler))]
+			static unsafe void Invoke (IntPtr block, IntPtr parameters, IntPtr error) {
 				var descriptor = (BlockLiteral *) block;
-				var del = (global::BranchSDK.BranchSessionLoaded) (descriptor->Target);
+				var del = (global::BranchSDK.BranchDeepLinkHandler) (descriptor->Target);
 				if (del != null)
-					del ( Runtime.GetNSObject<MonoTouch.Foundation.NSDictionary> (parameters));
+					del ( Runtime.GetNSObject<MonoTouch.Foundation.NSDictionary> (parameters),  Runtime.GetNSObject<MonoTouch.Foundation.NSError> (error));
 			}
-		} /* class SDBranchSessionLoaded */
+		} /* class SDBranchDeepLinkHandler */
 		
-		internal class NIDBranchSessionLoaded {
+		internal class NIDBranchDeepLinkHandler {
 			IntPtr blockPtr;
-			DBranchSessionLoaded invoker;
+			DBranchDeepLinkHandler invoker;
 			
 			[Preserve (Conditional=true)]
-			public unsafe NIDBranchSessionLoaded (BlockLiteral *block)
+			public unsafe NIDBranchDeepLinkHandler (BlockLiteral *block)
 			{
 				blockPtr = _Block_copy ((IntPtr) block);
-				invoker = block->GetDelegateForBlock<DBranchSessionLoaded> ();
+				invoker = block->GetDelegateForBlock<DBranchDeepLinkHandler> ();
 			}
 			
 			[Preserve (Conditional=true)]
-			~NIDBranchSessionLoaded ()
+			~NIDBranchDeepLinkHandler ()
 			{
 				_Block_release (blockPtr);
 			}
 			
 			[Preserve (Conditional=true)]
-			public unsafe static global::BranchSDK.BranchSessionLoaded Create (IntPtr block)
+			public unsafe static global::BranchSDK.BranchDeepLinkHandler Create (IntPtr block)
 			{
-				return new NIDBranchSessionLoaded ((BlockLiteral *) block).Invoke;
+				return new NIDBranchDeepLinkHandler ((BlockLiteral *) block).Invoke;
 			}
 			
 			[Preserve (Conditional=true)]
-			unsafe void Invoke (NSDictionary parameters)
+			unsafe void Invoke (NSDictionary parameters, NSError error)
 			{
-				invoker (blockPtr, parameters == null ? IntPtr.Zero : parameters.Handle);
+				invoker (blockPtr, parameters == null ? IntPtr.Zero : parameters.Handle, error == null ? IntPtr.Zero : error.Handle);
 			}
-		} /* class NIDBranchSessionLoaded */
+		} /* class NIDBranchDeepLinkHandler */
 		
 		[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
-		internal delegate void DBranchRewardsLoaded (IntPtr block, bool changed);
+		internal delegate void DBranchRewardsLoaded (IntPtr block, bool changed, IntPtr error);
 		
 		//
 		// This class bridges native block invocations that call into C#
@@ -150,11 +200,11 @@ namespace MonoTouch.ObjCRuntime {
 			static internal readonly DBranchRewardsLoaded Handler = Invoke;
 			
 			[MonoPInvokeCallback (typeof (DBranchRewardsLoaded))]
-			static unsafe void Invoke (IntPtr block, bool changed) {
+			static unsafe void Invoke (IntPtr block, bool changed, IntPtr error) {
 				var descriptor = (BlockLiteral *) block;
 				var del = (global::BranchSDK.BranchRewardsLoaded) (descriptor->Target);
 				if (del != null)
-					del (changed);
+					del (changed,  Runtime.GetNSObject<MonoTouch.Foundation.NSError> (error));
 			}
 		} /* class SDBranchRewardsLoaded */
 		
@@ -182,9 +232,9 @@ namespace MonoTouch.ObjCRuntime {
 			}
 			
 			[Preserve (Conditional=true)]
-			unsafe void Invoke (bool changed)
+			unsafe void Invoke (bool changed, NSError error)
 			{
-				invoker (blockPtr, changed);
+				invoker (blockPtr, changed, error == null ? IntPtr.Zero : error.Handle);
 			}
 		} /* class NIDBranchRewardsLoaded */
 	}
